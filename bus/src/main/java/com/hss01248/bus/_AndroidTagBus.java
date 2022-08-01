@@ -58,7 +58,7 @@ class _AndroidTagBus {
         }
         List<BusObserver> observers = null;
         if (map.containsKey(tag)) {
-            observers = map.get(observers);
+            observers = map.get(tag);
         }
         if (observers == null) {
             observers = new ArrayList<>();

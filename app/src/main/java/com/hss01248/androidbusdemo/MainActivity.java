@@ -107,7 +107,7 @@ public class MainActivity extends AppCompatActivity {
         AndroidBus.observerByTag("userAction", false, new ContextBusObserver<LoginLogOutEvent>(this) {
             @Override
             protected void doObserverReally(LoginLogOutEvent obj) {
-
+                Log.e(AndroidBus.TAG,"tag -> ContextBusObserver userAction:"+ obj);
             }
         });
     }
