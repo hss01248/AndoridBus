@@ -63,6 +63,32 @@ AndroidBus.observer(true, this, new BusObserver<LoginEvent2>() {
 
 
 
+## lifecycler的更简洁api
+
+第二个参数要传lifecyclerOwner,
+
+此处提供一个更简洁的自适应api:   
+
+>  ContextBusObserver(Object contextOrFragment): 自动从contextOrFragment解析出activity 或fragment.
+
+```java
+AndroidBus.observerByTag("userAction", false, new ContextBusObserver<LoginLogOutEvent>(this) {
+            @Override
+            protected void doObserverReally(LoginLogOutEvent obj) {
+                
+            }
+        });
+
+AndroidBus.observer(false, new ContextBusObserver<LoginLogOutEvent>(this) {
+            @Override
+            protected void doObserverReally(LoginLogOutEvent obj) {
+                
+            }
+        });
+```
+
+
+
 
 
 # 日志

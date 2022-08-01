@@ -10,6 +10,7 @@ import java.util.Arrays;
  * @Date 01/08/2022 18:35
  * @Version 1.0
  */
+@Deprecated
 public abstract class NoOuterRefBusObserver<T> implements BusObserver<T> {
     public NoOuterRefBusObserver() {
         //this$0

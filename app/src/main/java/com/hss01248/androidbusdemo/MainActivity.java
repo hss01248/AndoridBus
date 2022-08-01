@@ -8,6 +8,7 @@ import android.view.View;
 
 import com.hss01248.bus.AndroidBus;
 import com.hss01248.bus.BusObserver;
+import com.hss01248.bus.ContextBusObserver;
 import com.hss01248.bus.NoOuterRefBusObserver;
 import com.hss01248.login.LoginLogOutEvent;
 import com.hss01248.login.LoginLogoutObserver;
@@ -102,6 +103,13 @@ public class MainActivity extends AppCompatActivity {
                 Log.e(AndroidBus.TAG,"tag -> userAction:"+ obj);
             }
         });
+
+        AndroidBus.observerByTag("userAction", false, new ContextBusObserver<LoginLogOutEvent>(this) {
+            @Override
+            protected void doObserverReally(LoginLogOutEvent obj) {
+
+            }
+        });
     }
 
     public void registerAppForeground(View view) {
@@ -118,5 +126,7 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
+
+
     }
 }

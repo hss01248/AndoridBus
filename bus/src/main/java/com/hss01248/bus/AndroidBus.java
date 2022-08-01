@@ -125,6 +125,14 @@ public class AndroidBus {
     public static <T> void observerByTag(String tag, boolean once, @Nullable LifecycleOwner lifecycleOwner, @NonNull BusObserver<T> observer) {
         _AndroidTagBus.observerByTag(tag,once,lifecycleOwner,observer);
     }
+
+    public static <T> void observerByTag(String tag, boolean once, @NonNull ContextBusObserver<T> observer) {
+        observerByTag(tag,once,observer.getLifecyclerFromObj(),observer);
+    }
+
+    public static <T> void observer(boolean once, @NonNull ContextBusObserver<T> observer) {
+        observer(once,observer.getLifecyclerFromObj(),observer);
+    }
     public static <T> void observer(boolean once, @Nullable LifecycleOwner lifecycleOwner, @NonNull BusObserver<T> observer) {
         if (enableLog) {
             Log.v(TAG, "prepare to add observer : once=" + once + ", lifecycle:" + lifecycleOwner + ", observer" + observer);
