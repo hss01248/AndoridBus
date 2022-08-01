@@ -8,10 +8,13 @@ import android.view.View;
 
 import com.hss01248.bus.AndroidBus;
 import com.hss01248.bus.BusObserver;
+import com.hss01248.bus.NoOuterRefBusObserver;
 import com.hss01248.login.LoginLogOutEvent;
 import com.hss01248.login.LoginLogoutObserver;
 import com.hss01248.status.foreground.AppForegroundBackgroundEvent;
 import com.hss01248.status.foreground.AppForegroundBackgroundManager;
+
+import java.util.Arrays;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -102,11 +105,17 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void registerAppForeground(View view) {
-        AppForegroundBackgroundManager.observer(false, null, new BusObserver<AppForegroundBackgroundEvent>() {
+        AppForegroundBackgroundManager.observer(false, null, new NoOuterRefBusObserver<AppForegroundBackgroundEvent>() {
+            {
+                Log.w(AndroidBus.TAG,"this$0: "+ Arrays.toString(getClass().getDeclaredFields()));
+                //final com.hss01248.androidbusdemo.MainActivity com.hss01248.androidbusdemo.MainActivity$7.this$0
+                // 持有外部类引用; this$0  final, 不可置空
+            }
+
             @Override
             public void observer(AppForegroundBackgroundEvent obj) {
                 Log.e(AndroidBus.TAG,"app foreground: "+ obj);
-                // 持有外部类引用; this$0
+
             }
         });
     }

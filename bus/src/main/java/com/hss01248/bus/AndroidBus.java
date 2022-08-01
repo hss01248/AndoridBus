@@ -129,14 +129,22 @@ public class AndroidBus {
         if (enableLog) {
             Log.v(TAG, "prepare to add observer : once=" + once + ", lifecycle:" + lifecycleOwner + ", observer" + observer);
         }
-
         Type[] types = observer.getClass().getGenericInterfaces();
+        //直接实现的接口时
         if (types == null || types.length == 0) {
-            Log.w(TAG, "not impl of  BusObserver<T> 0");
-            return;
+            Type type0 = observer.getClass().getGenericSuperclass();
+            //实现的是类时
+            if (type0 == null ) {
+                Log.w(TAG, "not impl of  BusObserver<T> 0");
+                return;
+            }else {
+                types = new Type[]{type0};
+                Log.i(TAG, "get types form super class");
+            }
         }
         for (Type type : types) {
             if (type instanceof ParameterizedType) {
+                //实现里,泛型都取第一个泛型
                 Class aClass = ClassUtil.getClass(type, 0);
                 if (aClass == null) {
                     if (enableLog) {
@@ -167,8 +175,5 @@ public class AndroidBus {
                 }
             }
         }
-
     }
-
-
 }
