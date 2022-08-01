@@ -9,7 +9,7 @@
 ## gradle
 
 ```groovy
-api "com.github.hss01248.AndoridBus:login:1.0.0"
+
 api "com.github.hss01248.AndoridBus:bus:1.0.0"
 ```
 
@@ -39,3 +39,38 @@ AndroidBus.observer(true, this, new BusObserver<LoginEvent2>() {
 # 日志
 
 ![image-20220801154458748](https://cdn.jsdelivr.net/gh/shuiniuhss/myimages@main/imagemac2/1659339904596-image-20220801154458748.jpg)
+
+
+
+# 对login logout通用事件的封装
+
+```groovy
+api "com.github.hss01248.AndoridBus:login:1.0.1"
+```
+
+
+
+```java
+ //登录成功时发送
+AndroidBus.post( LoginLogOutEvent.successLogin("user detail...."));
+
+// 取消登录时
+AndroidBus.post(LoginLogOutEvent.fromCancelLogin());
+
+//主动点击退出登录按钮退出
+  AndroidBus.post(LoginLogOutEvent.successLogout());
+
+//监听
+ LoginLogoutObserver.observer(false, null, new LoginLogoutObserver<Object>() {
+            @Override
+            public void login(Object userDetail) {
+                
+            }
+
+            @Override
+            public void logout(boolean isFromLoginPage) {
+
+            }
+        });
+```
+

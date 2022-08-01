@@ -1,4 +1,4 @@
-package com.hss01248.login;
+package com.hss01248.androidbusdemo;
 
 /**
  * @Despciption todo
@@ -6,6 +6,7 @@ package com.hss01248.login;
  * @Date 01/08/22 14:55
  * @Version 1.0
  */
+@Deprecated
 public class LogoutEvent2 {
 
     public boolean fromLoginPage;
