@@ -84,4 +84,18 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
+
+    public void loginByTag(View view) {
+        AndroidBus.postByTag("userAction",LoginLogOutEvent.successLogout());
+    }
+
+    public void registerLoginByTag(View view) {
+        AndroidBus.observerByTag("userAction",true,null,new BusObserver<LoginLogOutEvent>(){
+
+            @Override
+            public void observer(LoginLogOutEvent obj) {
+                Log.e(AndroidBus.TAG,"tag -> userAction:"+ obj);
+            }
+        });
+    }
 }

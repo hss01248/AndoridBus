@@ -10,10 +10,22 @@
 
 ```groovy
 
-api "com.github.hss01248.AndoridBus:bus:1.0.0"
+api "com.github.hss01248.AndoridBus:bus:1.0.2"
 ```
 
 ## java调用
+
+提供两种匹配Observer的方式:
+
+* ByTag
+
+* ByType
+
+> 两种方式数据隔离,必须成对使用.
+
+### byType
+
+> 根据BusObserver上的泛型来作为key存储observer,  post的event必须和泛型class严格一致.
 
 ```java
 AndroidBus.post(new LoginEvent2("user detail..."));
@@ -28,6 +40,23 @@ AndroidBus.observer(true, this, new BusObserver<LoginEvent2>() {
             @Override
             public void observer(LoginEvent2 obj) {
                 Log.i("observer","once, with life "+ obj);
+            }
+        });
+```
+
+### byTag
+
+> 以tag字符串为key
+
+```java
+  AndroidBus.postByTag("userAction",LoginLogOutEvent.successLogout());
+
+
+ AndroidBus.observerByTag("userAction",true,null,new BusObserver<LoginLogOutEvent>(){
+
+            @Override
+            public void observer(LoginLogOutEvent obj) {
+                Log.e(AndroidBus.TAG,"tag -> userAction:"+ obj);
             }
         });
 ```
