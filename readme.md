@@ -4,6 +4,17 @@
 
 # 使用
 
+[![](https://jitpack.io/v/hss01248/AndoridBus.svg)](https://jitpack.io/#hss01248/AndoridBus)
+
+## gradle
+
+```groovy
+api "com.github.hss01248.AndoridBus:login:1.0.0"
+api "com.github.hss01248.AndoridBus:bus:1.0.0"
+```
+
+## java调用
+
 ```java
 AndroidBus.post(new LoginEvent2("user detail..."));
 
