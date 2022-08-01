@@ -28,6 +28,7 @@ public class AndroidBus {
     static List<BusObserver> onceObservers = new CopyOnWriteArrayList<>();
     static Handler mainHandler;
     public static String  TAG = "AndroidBus";
+    public static boolean enableLog = false;
 
     public static <T> void post(T obj){
         Class<?> aClass = obj.getClass();
@@ -48,7 +49,9 @@ public class AndroidBus {
                             @Override
                             public void run() {
                                 try {
-                                    Log.i(TAG,Thread.currentThread().getName() +" --> dispatch to busObserver on main"+busObserver +"  , data: "+ obj );
+                                    if(enableLog) {
+                                        Log.i(TAG,Thread.currentThread().getName() +" --> dispatch to busObserver on main"+busObserver +"  , data: "+ obj );
+                                    }
                                     busObserver.observer(obj);
                                 }catch (Throwable throwable){
                                     throwable.printStackTrace();
@@ -57,10 +60,14 @@ public class AndroidBus {
                         });
                     }else {
                         try {
-                            Log.i(TAG,Thread.currentThread().getName() +" --> dispatch to busObserver "+busObserver +"  , data: "+ obj );
+                            if(enableLog) {
+                                Log.i(TAG,Thread.currentThread().getName() +" --> dispatch to busObserver "+busObserver +"  , data: "+ obj );
+                            }
                             busObserver.observer(obj);
                         }catch (Throwable throwable){
-                            Log.w(TAG,throwable);
+                            if(enableLog) {
+                                Log.w(TAG,throwable);
+                            }
                         }
                     }
                 }
@@ -72,7 +79,9 @@ public class AndroidBus {
                             onceObservers.remove(busObserver);
                         }
                     }catch (Throwable throwable){
-                        Log.w(TAG,throwable);
+                        if(enableLog) {
+                            Log.w(TAG,throwable);
+                        }
                     }
                 }
             }
@@ -93,14 +102,19 @@ public class AndroidBus {
                 }
             }
         }catch (Throwable throwable){
-            Log.w(TAG,throwable);
+            if(enableLog) {
+                Log.w(TAG,throwable);
+            }
         }
     }
 
 
 
     public static <T> void observer(boolean once, @Nullable LifecycleOwner lifecycleOwner, @NonNull BusObserver<T> observer){
-        Log.v(TAG,"prepare to add observer : once="+once + ", lifecycle:"+ lifecycleOwner+", observer"+ observer);
+        if(enableLog){
+            Log.v(TAG,"prepare to add observer : once="+once + ", lifecycle:"+ lifecycleOwner+", observer"+ observer);
+        }
+
         Type[] types = observer.getClass().getGenericInterfaces();
         if(types == null || types.length == 0){
             Log.w(TAG,"not impl of  BusObserver<T> 0");
@@ -110,10 +124,14 @@ public class AndroidBus {
             if (type instanceof ParameterizedType) {
                 Class aClass = ClassUtil.getClass(type,0);
                 if(aClass == null){
-                    Log.w(TAG,"ClassUtil.getClass is null : "+ type);
+                    if(enableLog) {
+                        Log.w(TAG,"ClassUtil.getClass is null : "+ type);
+                    }
                     continue;
                 }
-                Log.d(TAG,"real add observer : "+ observer+" , type:"+ aClass);
+                if(enableLog) {
+                    Log.d(TAG,"real add observer : "+ observer+" , type:"+ aClass);
+                }
                 List<BusObserver> busObservers = null;
                 if(map.containsKey(aClass)){
                     busObservers = map.get(aClass);
@@ -129,7 +147,9 @@ public class AndroidBus {
                     onceObservers.add(observer);
                 }
             }else {
-                Log.w(TAG,"not impl of  BusObserver<T>");
+                if(enableLog) {
+                    Log.w(TAG,"not impl of  BusObserver<T>");
+                }
             }
         }
 
