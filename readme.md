@@ -20,3 +20,11 @@ AndroidBus.observer(true, this, new BusObserver<LoginEvent2>() {
             }
         });
 ```
+
+
+
+
+
+# 日志
+
+![image-20220801154458748](https://cdn.jsdelivr.net/gh/shuiniuhss/myimages@main/imagemac2/1659339904596-image-20220801154458748.jpg)
