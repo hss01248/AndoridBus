@@ -2,3 +2,7 @@ include ':login'
 include ':bus'
 include ':app'
 rootProject.name = "AndroidBusDemo"
+include ':status-foreground'
+include ':status-network'
+include ':status-top-activity'
+include ':status-location'
