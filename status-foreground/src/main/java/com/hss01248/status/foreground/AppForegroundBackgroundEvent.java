@@ -13,4 +13,11 @@ public class AppForegroundBackgroundEvent {
     }
 
     boolean isToBackground;
+
+    @Override
+    public String toString() {
+        return "AppForegroundBackgroundEvent{" +
+                "isToBackground=" + isToBackground +
+                '}';
+    }
 }

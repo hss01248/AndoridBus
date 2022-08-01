@@ -37,6 +37,12 @@
         android:textAllCaps="false"
         android:onClick="registerLoginByTag"
         android:layout_height="wrap_content"/>
+    <Button
+        android:layout_width="match_parent"
+        android:text="registerAppForeground"
+        android:textAllCaps="false"
+        android:onClick="registerAppForeground"
+        android:layout_height="wrap_content"/>
 
 
 </LinearLayout>

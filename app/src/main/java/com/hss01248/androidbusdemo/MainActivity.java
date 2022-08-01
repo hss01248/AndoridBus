@@ -10,6 +10,8 @@ import com.hss01248.bus.AndroidBus;
 import com.hss01248.bus.BusObserver;
 import com.hss01248.login.LoginLogOutEvent;
 import com.hss01248.login.LoginLogoutObserver;
+import com.hss01248.status.foreground.AppForegroundBackgroundEvent;
+import com.hss01248.status.foreground.AppForegroundBackgroundManager;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -95,6 +97,16 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void observer(LoginLogOutEvent obj) {
                 Log.e(AndroidBus.TAG,"tag -> userAction:"+ obj);
+            }
+        });
+    }
+
+    public void registerAppForeground(View view) {
+        AppForegroundBackgroundManager.observer(false, null, new BusObserver<AppForegroundBackgroundEvent>() {
+            @Override
+            public void observer(AppForegroundBackgroundEvent obj) {
+                Log.e(AndroidBus.TAG,"app foreground: "+ obj);
+                // 持有外部类引用; this$0
             }
         });
     }
