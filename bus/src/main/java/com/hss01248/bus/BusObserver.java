@@ -26,8 +26,8 @@ public interface BusObserver<T> extends DefaultLifecycleObserver {
         AndroidBus.removeObserverMannually(this);
     }
 
-    //静态方法,避免持有外部类引用
-    public static <T> BusObserver<T> newIntance(){
+    //静态方法,避免持有外部类引用, 但回调怎么办?
+    public static <T> BusObserver<T> newIntance(Object... objects){
         return new BusObserver<T>() {
             @Override
             public void observer(T obj) {

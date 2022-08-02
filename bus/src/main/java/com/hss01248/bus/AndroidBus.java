@@ -106,12 +106,30 @@ public class AndroidBus {
 
     public static <T> void removeObserverMannually(BusObserver<T> observer) {
         try {
-            if (onceObservers.contains(observer)) {
-                onceObservers.remove(observer);
-            }
+            onceObservers.remove(observer);
             for (Map.Entry<Class, List<BusObserver>> classListEntry : map.entrySet()) {
                 List<BusObserver> value = classListEntry.getValue();
                 if (value.contains(observer)) {
+                    if(enableLog){
+                        Log.d(TAG,"remove observer from list, "+observer);
+                    }
+                    value.remove(observer);
+                }
+            }
+        } catch (Throwable throwable) {
+            if (enableLog) {
+                Log.w(TAG, throwable);
+            }
+        }
+
+        try {
+            _AndroidTagBus.onceObservers.remove(observer);
+            for (Map.Entry<String, List<BusObserver>> classListEntry : _AndroidTagBus.map.entrySet()) {
+                List<BusObserver> value = classListEntry.getValue();
+                if (value.contains(observer)) {
+                    if(enableLog){
+                        Log.d(TAG,"remove observer from tag list, "+observer);
+                    }
                     value.remove(observer);
                 }
             }

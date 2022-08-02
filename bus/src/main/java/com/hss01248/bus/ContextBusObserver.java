@@ -28,11 +28,13 @@ public abstract class ContextBusObserver<T> implements BusObserver<T> {
         if(obj2 instanceof Activity){
             Activity activity = (Activity) obj2;
             if(activity.isFinishing() || activity.isDestroyed()){
+                AndroidBus.removeObserverMannually(this);
                 return;
             }
         }else if(obj2 instanceof Fragment){
             Fragment fragment = (Fragment) obj2;
             if(fragment.isDetached() || fragment.isRemoving()){
+                AndroidBus.removeObserverMannually(this);
                 return;
             }
         }
