@@ -104,6 +104,11 @@ public class AndroidBus {
         }
     }
 
+    /**
+     * 提供手动移除observer的api. 适用于多页面长流程结束的移除
+     * @param observer
+     * @param <T>
+     */
     public static <T> void removeObserverMannually(BusObserver<T> observer) {
         try {
             onceObservers.remove(observer);
