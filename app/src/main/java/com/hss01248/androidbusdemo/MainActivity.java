@@ -8,6 +8,7 @@ import android.view.View;
 
 import com.hss01248.bus.AndroidBus;
 import com.hss01248.bus.BusObserver;
+import com.hss01248.bus.GenericClassUtil;
 import com.hss01248.bus.ContextBusObserver;
 import com.hss01248.bus.NoOuterRefBusObserver;
 import com.hss01248.login.LoginLogOutEvent;
@@ -128,5 +129,15 @@ public class MainActivity extends AppCompatActivity {
         });
 
 
+    }
+
+    public void fromClass(View view) {
+        Class genericsClass = GenericClassUtil.getGenericFromSuperClass(GenericTest2Impl.class, 0);
+        Log.w("class","genericsClass fromClass:"+genericsClass);
+    }
+
+    public void fromInterface(View view) {
+        Class genericsClass = GenericClassUtil.getGenericFromInterfaces(GenericTest1Impl.class, 0,1);
+        Log.w("class","genericsClass fromInterface:"+genericsClass);
     }
 }

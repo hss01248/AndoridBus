@@ -43,6 +43,18 @@
         android:textAllCaps="false"
         android:onClick="registerAppForeground"
         android:layout_height="wrap_content"/>
+    <Button
+        android:layout_width="match_parent"
+        android:text="获取继承自接口的泛型"
+        android:textAllCaps="false"
+        android:onClick="fromInterface"
+        android:layout_height="wrap_content"/>
+    <Button
+        android:layout_width="match_parent"
+        android:text="获取继承自类的泛型"
+        android:textAllCaps="false"
+        android:onClick="fromClass"
+        android:layout_height="wrap_content"/>
 
 
 </LinearLayout>

@@ -176,7 +176,7 @@ public class AndroidBus {
         for (Type type : types) {
             if (type instanceof ParameterizedType) {
                 //实现里,泛型都取第一个泛型
-                Class aClass = ClassUtil.getClass(type, 0);
+                Class aClass = GenericClassUtil.getClass(type, 0);
                 if (aClass == null) {
                     if (enableLog) {
                         Log.w(TAG, "ClassUtil.getClass is null : " + type);
