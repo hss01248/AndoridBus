@@ -10,7 +10,7 @@
 
 ```groovy
 
-api "com.github.hss01248.AndoridBus:bus:1.0.2"
+api "com.github.hss01248.AndoridBus:bus:1.0.4"
 ```
 
 ## java调用

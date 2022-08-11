@@ -14,8 +14,8 @@ public interface LoginLogoutObserver<T>  {
     void logout(boolean isFromLoginPage);
 
 
-    public static <T> void observer(boolean once, @Nullable LifecycleOwner lifecycleOwner, LoginLogoutObserver<T> observer){
-        AndroidBus.observer(once, lifecycleOwner, new BusObserver<LoginLogOutEvent>() {
+    public static <T> void observer( @Nullable LifecycleOwner lifecycleOwner, LoginLogoutObserver<T> observer){
+        AndroidBus.observer( lifecycleOwner, new BusObserver<LoginLogOutEvent>() {
             @Override
             public void observer(LoginLogOutEvent obj) {
                 if(obj.loginSuccess){

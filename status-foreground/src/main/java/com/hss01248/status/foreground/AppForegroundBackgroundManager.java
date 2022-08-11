@@ -18,8 +18,8 @@ public class AppForegroundBackgroundManager {
         return ForegroundBackgroundListener.isAppForeground();
     }
 
-    public static void observer(boolean once, LifecycleOwner lifecycleOwner, BusObserver<AppForegroundBackgroundEvent> observer){
-        AndroidBus.observer(once,lifecycleOwner,observer);
+    public static void observer( LifecycleOwner lifecycleOwner, BusObserver<AppForegroundBackgroundEvent> observer){
+        AndroidBus.observer(lifecycleOwner,observer);
     }
 
 }

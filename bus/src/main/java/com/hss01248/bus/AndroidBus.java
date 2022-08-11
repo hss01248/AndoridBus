@@ -25,7 +25,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
 public class AndroidBus {
 
     static Map<Class, List<BusObserver>> map = new ConcurrentHashMap<>();
-    static List<BusObserver> onceObservers = new CopyOnWriteArrayList<>();
+    //static List<BusObserver> onceObservers = new CopyOnWriteArrayList<>();
     static Handler mainHandler;
     public static String TAG = "AndroidBus";
     public static boolean enableLog = true;
@@ -36,7 +36,7 @@ public class AndroidBus {
             //必须完全匹配,不能是子类.
             List<BusObserver> busObservers = map.get(aClass);
             if(busObservers != null && !busObservers.isEmpty()){
-                dispatchObservers(busObservers,onceObservers,enableLog,obj);
+                dispatchObservers(busObservers,enableLog,obj);
             }else {
                 if(enableLog)
                 Log.w(TAG, "no observer for :" + obj);
@@ -51,13 +51,10 @@ public class AndroidBus {
         _AndroidTagBus.postByTag(tag,obj);
     }
 
-     static <T> void dispatchObservers(List<BusObserver> busObservers, List<BusObserver> onceObservers, boolean enableLog, T obj) {
-        List<BusObserver> onceObserversToRemove = new ArrayList<>();
+     static <T> void dispatchObservers(List<BusObserver> busObservers, boolean enableLog, T obj) {
         if (busObservers != null && !busObservers.isEmpty()) {
             for (BusObserver busObserver : busObservers) {
-                if (onceObservers.contains(busObserver)) {
-                    onceObserversToRemove.add(busObserver);
-                }
+
                 if (busObserver.switchToUIThread()) {
                     if (mainHandler == null) {
                         mainHandler = new Handler(Looper.getMainLooper());
@@ -88,19 +85,6 @@ public class AndroidBus {
                     }
                 }
             }
-            //移除一次性的监听器
-            if (!onceObserversToRemove.isEmpty()) {
-                try {
-                    for (BusObserver busObserver : onceObserversToRemove) {
-                        busObservers.remove(busObserver);
-                        onceObservers.remove(busObserver);
-                    }
-                } catch (Throwable throwable) {
-                    if (enableLog) {
-                        Log.w(TAG, throwable);
-                    }
-                }
-            }
         }
     }
 
@@ -111,7 +95,6 @@ public class AndroidBus {
      */
     public static <T> void removeObserverMannually(BusObserver<T> observer) {
         try {
-            onceObservers.remove(observer);
             for (Map.Entry<Class, List<BusObserver>> classListEntry : map.entrySet()) {
                 List<BusObserver> value = classListEntry.getValue();
                 if (value.contains(observer)) {
@@ -128,7 +111,6 @@ public class AndroidBus {
         }
 
         try {
-            _AndroidTagBus.onceObservers.remove(observer);
             for (Map.Entry<String, List<BusObserver>> classListEntry : _AndroidTagBus.map.entrySet()) {
                 List<BusObserver> value = classListEntry.getValue();
                 if (value.contains(observer)) {
@@ -145,20 +127,20 @@ public class AndroidBus {
         }
     }
 
-    public static <T> void observerByTag(String tag, boolean once, @Nullable LifecycleOwner lifecycleOwner, @NonNull BusObserver<T> observer) {
-        _AndroidTagBus.observerByTag(tag,once,lifecycleOwner,observer);
+    public static <T> void observerByTag(String tag, @Nullable LifecycleOwner lifecycleOwner, @NonNull BusObserver<T> observer) {
+        _AndroidTagBus.observerByTag(tag,lifecycleOwner,observer);
     }
 
-    public static <T> void observerByTag(String tag, boolean once, @NonNull ContextBusObserver<T> observer) {
-        observerByTag(tag,once,observer.getLifecyclerFromObj(),observer);
+    public static <T> void observerByTag(String tag, @NonNull ContextBusObserver<T> observer) {
+        observerByTag(tag,observer.getLifecyclerFromObj(),observer);
     }
 
-    public static <T> void observer(boolean once, @NonNull ContextBusObserver<T> observer) {
-        observer(once,observer.getLifecyclerFromObj(),observer);
+    public static <T> void observer( @NonNull ContextBusObserver<T> observer) {
+        observer(observer.getLifecyclerFromObj(),observer);
     }
-    public static <T> void observer(boolean once, @Nullable LifecycleOwner lifecycleOwner, @NonNull BusObserver<T> observer) {
+    public static <T> void observer( @Nullable LifecycleOwner lifecycleOwner, @NonNull BusObserver<T> observer) {
         if (enableLog) {
-            Log.v(TAG, "prepare to add observer : once=" + once + ", lifecycle:" + lifecycleOwner + ", observer" + observer);
+            Log.v(TAG, "prepare to add observer : once="  + ", lifecycle:" + lifecycleOwner + ", observer" + observer);
         }
         Type[] types = observer.getClass().getGenericInterfaces();
         //直接实现的接口时
@@ -196,9 +178,6 @@ public class AndroidBus {
                 busObservers.add(observer);
                 if (lifecycleOwner != null) {
                     lifecycleOwner.getLifecycle().addObserver(observer);
-                }
-                if (once) {
-                    onceObservers.add(observer);
                 }
             } else {
                 if (enableLog) {
