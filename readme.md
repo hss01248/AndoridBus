@@ -10,7 +10,7 @@
 
 ```groovy
 
-api "com.github.hss01248.AndoridBus:bus:1.0.4"
+api "com.github.hss01248.AndoridBus:bus:2.0.3"
 ```
 
 ## java调用
@@ -32,11 +32,11 @@ AndroidBus.post(new LoginEvent2("user detail..."));
 
 
 
-//void observer(boolean once, @Nullable LifecycleOwner lifecycleOwner, @NonNull BusObserver<T> observer)
+//void observer( @Nullable LifecycleOwner lifecycleOwner, @NonNull BusObserver<T> observer)
 //<T>--> 根据T的类型严格匹配. 子类无效.
 //once: 只observer一次,然后自动移除
 //lifecycleOwner onDestory时自动移除
-AndroidBus.observer(true, this, new BusObserver<LoginEvent2>() {
+AndroidBus.observer( this, new BusObserver<LoginEvent2>() {
             @Override
             public void observer(LoginEvent2 obj) {
                 Log.i("observer","once, with life "+ obj);
@@ -52,7 +52,7 @@ AndroidBus.observer(true, this, new BusObserver<LoginEvent2>() {
   AndroidBus.postByTag("userAction",LoginLogOutEvent.successLogout());
 
 
- AndroidBus.observerByTag("userAction",true,null,new BusObserver<LoginLogOutEvent>(){
+ AndroidBus.observerByTag("userAction",null,new BusObserver<LoginLogOutEvent>(){
 
             @Override
             public void observer(LoginLogOutEvent obj) {
@@ -72,7 +72,7 @@ AndroidBus.observer(true, this, new BusObserver<LoginEvent2>() {
 >  ContextBusObserver(Object contextOrFragment): 自动从contextOrFragment解析出activity 或fragment.
 
 ```java
-AndroidBus.observerByTag("userAction", false, new ContextBusObserver<LoginLogOutEvent>(this) {
+AndroidBus.observerByTag("userAction",  new ContextBusObserver<LoginLogOutEvent>(this) {
             @Override
             protected void doObserverReally(LoginLogOutEvent obj) {
                 
@@ -89,6 +89,32 @@ AndroidBus.observer(false, new ContextBusObserver<LoginLogOutEvent>(this) {
 
 
 
+# 移除监听
+
+> 传了lifecycler/activity/fragment/context时,不用管监听的移除. 
+>
+> 没有传,默认永远监听. 这时可以手动移除
+
+```java
+ //AndroidBus类里:
+
+/**
+     * 提供手动移除observer的api. 适用于多页面长流程结束的移除
+     * @param observer
+     * @param <T>
+     */
+    public static <T> void removeObserverMannually(BusObserver<T> observer) 
+      
+       public static  void removeObserverByTag(String tag)
+      
+       public static  void removeObserverByType(Class clazz)
+      
+   //在BusObserver里也有移除自己的方法:
+      default void unSubscribeSelf(){
+            AndroidBus.removeObserverMannually(this);
+        }
+```
+
 
 
 # 日志
@@ -100,7 +126,7 @@ AndroidBus.observer(false, new ContextBusObserver<LoginLogOutEvent>(this) {
 # 对login logout通用事件的封装
 
 ```groovy
-api "com.github.hss01248.AndoridBus:login:1.0.1"
+api "com.github.hss01248.AndoridBus:login:2.0.3"
 ```
 
 
@@ -116,7 +142,7 @@ AndroidBus.post(LoginLogOutEvent.fromCancelLogin());
   AndroidBus.post(LoginLogOutEvent.successLogout());
 
 //监听
- LoginLogoutObserver.observer(false, null, new LoginLogoutObserver<Object>() {
+ LoginLogoutObserver.observer( null, new LoginLogoutObserver<Object>() {
             @Override
             public void login(Object userDetail) {
                 
