@@ -127,6 +127,21 @@ public class AndroidBus {
         }
     }
 
+    public static  void removeObserverByTag(String tag) {
+        try {
+            _AndroidTagBus.map.remove(tag);
+        }catch (Throwable throwable){
+            throwable.printStackTrace();
+        }
+    }
+    public static  void removeObserverByType(Class clazz) {
+        try {
+            AndroidBus.map.remove(clazz.getName());
+        }catch (Throwable throwable){
+            throwable.printStackTrace();
+        }
+    }
+
     public static <T> void observerByTag(String tag, @Nullable LifecycleOwner lifecycleOwner, @NonNull BusObserver<T> observer) {
         _AndroidTagBus.observerByTag(tag,lifecycleOwner,observer);
     }
