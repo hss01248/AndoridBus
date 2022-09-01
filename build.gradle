@@ -1,5 +1,11 @@
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
 buildscript {
+    apply from: "https://raw.githubusercontent.com/hss01248/flipperUtil/dev/deps/uploadAllByMavenPublish.gradle?a=16"
+    ext{
+        groupId='com.github.hss01248.AndoridBus'
+        versionCode = '2.0.4'
+        isPublisToLocal=true
+    }
     repositories {
         google()
         jcenter()

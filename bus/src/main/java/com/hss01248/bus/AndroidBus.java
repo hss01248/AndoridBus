@@ -36,7 +36,7 @@ public class AndroidBus {
             //必须完全匹配,不能是子类.
             List<BusObserver> busObservers = map.get(aClass);
             if(busObservers != null && !busObservers.isEmpty()){
-                dispatchObservers(busObservers,enableLog,obj);
+                dispatchObservers(busObservers,enableLog,obj,aClass.getName());
             }else {
                 if(enableLog)
                 Log.w(TAG, "no observer for :" + obj);
@@ -51,7 +51,7 @@ public class AndroidBus {
         _AndroidTagBus.postByTag(tag,obj);
     }
 
-     static <T> void dispatchObservers(List<BusObserver> busObservers, boolean enableLog, T obj) {
+     static <T> void dispatchObservers(List<BusObserver> busObservers, boolean enableLog, T obj,String tag) {
         if (busObservers != null && !busObservers.isEmpty()) {
             for (BusObserver busObserver : busObservers) {
 
@@ -64,7 +64,7 @@ public class AndroidBus {
                         public void run() {
                             try {
                                 if (enableLog) {
-                                    Log.i(TAG, Thread.currentThread().getName() + " --> dispatch to busObserver on main" + busObserver + "  , data: " + obj);
+                                    Log.i(TAG, Thread.currentThread().getName() + " --> dispatch to busObserver on main " + busObserver +", key is :"+tag+ "  , data: " + obj);
                                 }
                                 busObserver.observer(obj);
                             } catch (Throwable throwable) {
@@ -75,7 +75,7 @@ public class AndroidBus {
                 } else {
                     try {
                         if (enableLog) {
-                            Log.i(TAG, Thread.currentThread().getName() + " --> dispatch to busObserver " + busObserver + "  , data: " + obj);
+                            Log.i(TAG, Thread.currentThread().getName() + " --> dispatch to busObserver " + busObserver +", key is :"+tag+ "  , data: " + obj);
                         }
                         busObserver.observer(obj);
                     } catch (Throwable throwable) {

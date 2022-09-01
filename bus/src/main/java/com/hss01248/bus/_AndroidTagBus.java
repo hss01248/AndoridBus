@@ -34,7 +34,7 @@ class _AndroidTagBus {
         if (map.containsKey(tag)) {
             List<BusObserver> busObservers = map.get(tag);
             if (busObservers != null && !busObservers.isEmpty()) {
-                AndroidBus.dispatchObservers(busObservers, AndroidBus.enableLog, obj);
+                AndroidBus.dispatchObservers(busObservers, AndroidBus.enableLog, obj,tag);
             } else {
                 if (AndroidBus.enableLog) {
                     Log.w(AndroidBus.TAG, "not observer found on this tag: " + tag + ", obj: " + obj);
